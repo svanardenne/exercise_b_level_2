@@ -43,7 +43,7 @@ function App() {
     })
       .then((res) => res.json())
       .then((res) => {
-        setUserInfo({ ...userInfo, id: res.id });
+        setUUID(res.id);
       });
   };
 
@@ -85,6 +85,7 @@ function App() {
   };
 
   useEffect(() => {
+    fetchId();
     fetchUserInfo();
     createUser();
   }, []);
@@ -101,7 +102,7 @@ function App() {
 
   const displayUUID = () => {
     return (
-      <Card style={{ width: "18rem" }}>
+      <Card>
         <Card.Header>Fetch UUID</Card.Header>
         <ListGroup variant="flush">
           <ListGroup.Item>{UUID}</ListGroup.Item>
@@ -112,7 +113,7 @@ function App() {
 
   const displayUser = () => {
     return (
-      <Card style={{ width: "18rem" }}>
+      <Card>
         <Card.Header>Fetch User</Card.Header>
         <ListGroup variant="flush">
           <ListGroup.Item>{id}</ListGroup.Item>
@@ -126,7 +127,7 @@ function App() {
 
   const newUser = () => {
     return (
-      <Card style={{ width: "18rem" }}>
+      <Card>
         <Card.Header>New User</Card.Header>
         <ListGroup variant="flush">
           <ListGroup.Item>{created_id}</ListGroup.Item>
@@ -144,11 +145,11 @@ function App() {
       <main>
         <Container className="mt-5">
           <Row>
-            <Col xs={{ span: 4, offset: 3 }} className="mb-5">
+            <Col xs={12} className="mb-5">
               {displayUUID()}
             </Col>
-            <Col>{displayUser()}</Col>
-            <Col>{newUser()}</Col>
+            <Col className="mb-5">{displayUser()}</Col>
+            <Col className="mb-5">{newUser()}</Col>
           </Row>
         </Container>
       </main>
