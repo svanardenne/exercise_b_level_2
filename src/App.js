@@ -1,8 +1,16 @@
 import "./App.css";
 import { useState, useEffect } from "react";
+import Card from "react-bootstrap/Card";
+import ListGroup from "react-bootstrap/ListGroup";
+import Container from "react-bootstrap/Container";
+import Navbar from "react-bootstrap/Navbar";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 
 function App() {
   // Set state
+  const [UUID, setUUID] = useState("uuid");
+
   const [userInfo, setUserInfo] = useState({
     id: 1,
     username: "username",
@@ -50,7 +58,13 @@ function App() {
     })
       .then((res) => res.json())
       .then((res) => {
-        setUserInfo({ ...userInfo, id: res.id });
+        setUserInfo({
+          ...userInfo,
+          id: res.id,
+          username: res.username,
+          email: res.email,
+          bio: res.bio,
+        });
       });
   };
 
@@ -63,6 +77,9 @@ function App() {
         setCreatedUserInfo({
           ...createdUserInfo,
           created_id: res.id,
+          created_username: res.username,
+          created_email: res.email,
+          created_bio: res.bio,
         });
       });
   };
@@ -72,14 +89,68 @@ function App() {
     createUser();
   }, []);
 
+  const header = () => {
+    return (
+      <Navbar bg="dark" variant="dark">
+        <Container>
+          <Navbar.Brand href="#home">Option B Client</Navbar.Brand>
+        </Container>
+      </Navbar>
+    );
+  };
+
+  const displayUUID = () => {
+    return (
+      <Card style={{ width: "18rem" }}>
+        <Card.Header>Fetch UUID</Card.Header>
+        <ListGroup variant="flush">
+          <ListGroup.Item>{UUID}</ListGroup.Item>
+        </ListGroup>
+      </Card>
+    );
+  };
+
+  const displayUser = () => {
+    return (
+      <Card style={{ width: "18rem" }}>
+        <Card.Header>Fetch User</Card.Header>
+        <ListGroup variant="flush">
+          <ListGroup.Item>{id}</ListGroup.Item>
+          <ListGroup.Item>{username}</ListGroup.Item>
+          <ListGroup.Item>{email}</ListGroup.Item>
+          <ListGroup.Item>{bio}</ListGroup.Item>
+        </ListGroup>
+      </Card>
+    );
+  };
+
+  const newUser = () => {
+    return (
+      <Card style={{ width: "18rem" }}>
+        <Card.Header>New User</Card.Header>
+        <ListGroup variant="flush">
+          <ListGroup.Item>{created_id}</ListGroup.Item>
+          <ListGroup.Item>{created_username}</ListGroup.Item>
+          <ListGroup.Item>{created_email}</ListGroup.Item>
+          <ListGroup.Item>{created_bio}</ListGroup.Item>
+        </ListGroup>
+      </Card>
+    );
+  };
+
   return (
     <div className="App">
-      <header>
-        <h1>Option B Client</h1>
-      </header>
+      <header>{header()}</header>
       <main>
-        <h1>{id}</h1>
-        <h1>{created_id}</h1>
+        <Container className="mt-5">
+          <Row>
+            <Col xs={{ span: 4, offset: 3 }} className="mb-5">
+              {displayUUID()}
+            </Col>
+            <Col>{displayUser()}</Col>
+            <Col>{newUser()}</Col>
+          </Row>
+        </Container>
       </main>
     </div>
   );
