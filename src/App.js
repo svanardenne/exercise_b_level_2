@@ -6,6 +6,8 @@ import Navbar from "react-bootstrap/Navbar";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
+import { fetchId, fetchUserInfo, createUser } from "./api/index";
+
 function App() {
   // Set state
   const [UUID, setUUID] = useState("uuid");
@@ -32,61 +34,41 @@ function App() {
     createdUserInfo;
 
   // Fetches uuid
-  const fetchId = () => {
-    fetch("http://localhost:3000/id", {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        setUUID(res.id);
-      });
+  const showId = () => {
+    fetchId().then((res) => {
+      setUUID(res.id);
+    });
   };
 
   // Fetches user info and places it in state
-  const fetchUserInfo = () => {
-    fetch("http://localhost:3000/user/3d8b3ed5-fb80-43d2-a719-4b9c6941980f", {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        setUserInfo({
-          ...userInfo,
-          id: res.id,
-          username: res.username,
-          email: res.email,
-          bio: res.bio,
-        });
+  const showUserInfo = () => {
+    fetchUserInfo().then((res) => {
+      setUserInfo({
+        ...userInfo,
+        id: res.id,
+        username: res.username,
+        email: res.email,
+        bio: res.bio,
       });
+    });
   };
 
-  const createUser = () => {
-    fetch("http://localhost:3000/user", {
-      method: "POST",
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        setCreatedUserInfo({
-          ...createdUserInfo,
-          created_id: res.id,
-          created_username: res.username,
-          created_email: res.email,
-          created_bio: res.bio,
-        });
+  const createAndShowUser = () => {
+    createUser().then((res) => {
+      setCreatedUserInfo({
+        ...createdUserInfo,
+        created_id: res.id,
+        created_username: res.username,
+        created_email: res.email,
+        created_bio: res.bio,
       });
+    });
   };
 
   useEffect(() => {
-    fetchId();
-    fetchUserInfo();
-    createUser();
+    showId();
+    showUserInfo();
+    createAndShowUser();
   }, []);
 
   const header = () => {
