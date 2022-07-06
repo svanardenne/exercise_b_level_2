@@ -33,7 +33,7 @@ function App() {
   const { created_id, created_username, created_email, created_bio } =
     createdUserInfo;
 
-  // Fetches uuid
+  // Fetches uuid and places in state
   const showId = () => {
     fetchId().then((res) => {
       setUUID(res.id);
@@ -53,6 +53,7 @@ function App() {
     });
   };
 
+  // Creates user and places new uswer data in state
   const createAndShowUser = () => {
     createUser().then((res) => {
       setCreatedUserInfo({
@@ -65,12 +66,14 @@ function App() {
     });
   };
 
+  // sets methods to run on page load
   useEffect(() => {
     showId();
     showUserInfo();
     createAndShowUser();
   }, []);
 
+  // Components
   const header = () => {
     return (
       <Navbar bg="dark" variant="dark">
@@ -120,6 +123,7 @@ function App() {
     );
   };
 
+  // Main return
   return (
     <div className="App">
       <header>{header()}</header>
